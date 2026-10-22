@@ -1,4 +1,4 @@
-"""牲畜姿态识别与行为分析系统（Livestock Posture Analysis System）。
+"""目标检测训练与推理平台（Object Detection Training & Inference Platform）。
 
 分层结构::
 
@@ -6,7 +6,7 @@
     lps.data          数据集自检、类别重映射、统计分析
     lps.models        改进的网络结构与注意力模块
     lps.core          检测推理引擎
-    lps.services      行为分析与报告导出
+    lps.services      属性分析与报告导出
     lps.ui            PyQt6 桌面端界面
 """
 
