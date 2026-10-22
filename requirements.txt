@@ -1,0 +1,18 @@
+# 运行依赖（Python 3.9+）
+#
+# 版本区间来自实际验证过的环境：Python 3.11 + torch 2.7.1 + ultralytics 8.3.253。
+# 区间取宽一点，便于在别人的机器上安装；如遇冲突优先保证 torch 与 ultralytics。
+#
+# torch 的 GPU 版本需按目标机器的 CUDA 自行选择，可参考官方安装页：
+#   https://pytorch.org/get-started/locally/
+# 只做推理时 CPU 版即可，体积小很多。
+
+ultralytics>=8.3,<9.0
+torch>=2.0
+torchvision>=0.15
+numpy>=1.23
+opencv-python>=4.8
+pandas>=2.0
+matplotlib>=3.7
+PyYAML>=6.0
+openpyxl>=3.1

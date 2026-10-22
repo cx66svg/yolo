@@ -1,0 +1,11 @@
+# 由 lps.data.converter 自动生成，请勿手工修改
+# 类别方案: activity3（3 类）
+path: C:/Users/Administrator/Desktop/livestock_posture/outputs/datasets/activity3
+train: train/images
+val: val/images
+names:
+  0: feeding
+  1: resting
+  2: active
+_scheme: activity3
+test: test/images

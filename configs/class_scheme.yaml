@@ -1,0 +1,116 @@
+# 类别方案配置
+#
+# 原始数据集（老师给的框架）使用 4 类：eat / rest / run / walk。
+# 本系统把「类别定义」抽象成可切换的方案，训练前用 prepare_data.py 生成
+# 对应方案的 data.yaml 与标签副本，原始标签保持不变。
+#
+# 为什么要做这件事：
+#   run 类在训练集里只有 353 个框（占 6.8%），walk 也只有 659 个，
+#   而 eat 有 3190 个（61%）。同时 run 与 walk 在单帧画面上姿态几乎一致，
+#   导致原复现结果里 run 的 AP50-95 只有 0.43，其余三类都在 0.82 以上。
+#   方案 activity3 把 walk 与 run 合并为「活动」，既解决类别不平衡，
+#   也回避了单帧无法区分行走与奔跑的固有限制。
+
+active: behavior4
+
+schemes:
+  # 方案一：保留四类，语义与原始数据一致，仅把命名规范化为行为术语
+  behavior4:
+    names:
+      0: feeding
+      1: resting
+      2: walking
+      3: running
+    zh:
+      0: 采食
+      1: 卧息
+      2: 行走
+      3: 奔跑
+    colors:
+      0: "#E67E22"
+      1: "#2E86DE"
+      2: "#27AE60"
+      3: "#C0392B"
+    source_map:
+      eat: 0
+      rest: 1
+      walk: 2
+      run: 3
+
+  # 方案二：三分类，合并行走与奔跑，缓解长尾与单帧歧义
+  activity3:
+    names:
+      0: feeding
+      1: resting
+      2: active
+    zh:
+      0: 采食
+      1: 卧息
+      2: 活动
+    colors:
+      0: "#E67E22"
+      1: "#2E86DE"
+      2: "#C0392B"
+    source_map:
+      eat: 0
+      rest: 1
+      walk: 2
+      run: 2
+
+  # 方案三：行为 × 视角 八分类
+  #
+  # 依据：原始图像文件名由数据集作者按「编号-行为-视角-来源-帧号」命名，
+  # 例如 022-sit-front-_MOV-0000、049-sit-side-_mp4-0000。
+  # 统计得视角覆盖 7198/7390 个框（97.4%），且与标注类别无冲突，
+  # 属于作者原始命名信息，不需要任何新增人工标注。
+  #
+  # 为什么值得拆：正面与侧面下羊的轮廓差异极大（正面对称、侧面细长），
+  # 同一行为在两种视角下的外观分布几乎不重叠，合并成一类会抬高类内方差。
+  # 拆开后模型不必再用同一组特征兼顾两种外观。
+  #
+  # 无法从文件名判断视角的图像（50 张、192 个框）默认丢弃，保持标签干净。
+  pose_view8:
+    names:
+      0: feeding_front
+      1: feeding_side
+      2: resting_front
+      3: resting_side
+      4: running_front
+      5: running_side
+      6: walking_front
+      7: walking_side
+    zh:
+      0: 采食(正面)
+      1: 采食(侧面)
+      2: 休息(正面)
+      3: 休息(侧面)
+      4: 奔跑(正面)
+      5: 奔跑(侧面)
+      6: 行走(正面)
+      7: 行走(侧面)
+    colors:
+      0: "#E67E22"
+      1: "#F0A04B"
+      2: "#2E86DE"
+      3: "#6FA8E0"
+      4: "#C0392B"
+      5: "#E2725B"
+      6: "#27AE60"
+      7: "#6FBF73"
+    context:
+      from: filename
+      tokens:
+        front: 0
+        side: 1
+      drop_unknown: true
+    # combine[行为] = [正面编号, 侧面编号]
+    combine:
+      eat: [0, 1]
+      rest: [2, 3]
+      run: [4, 5]
+      walk: [6, 7]
+    source_map:
+      eat: 0
+      rest: 2
+      run: 4
+      walk: 6

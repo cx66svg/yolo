@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "projects": [
+    {
+      "pid": "3c44fb41bd",
+      "name": "GOAT",
+      "dataset_root": "C:\\Users\\Administrator\\Desktop\\sheep_behavior_yolov8(1)\\sheep_behavior_yolov8\\data",
+      "data_yaml": "C:\\Users\\Administrator\\Desktop\\livestock_posture\\configs\\project_3c44fb41bd.yaml",
+      "class_names": {
+        "0": "采食",
+        "1": "休息",
+        "2": "奔跑",
+        "3": "行走"
+      },
+      "created_at": "2026-10-21 00:21:10",
+      "note": "验证路径修复",
+      "runs": [
+        "gui20",
+        "proj_3c44fb41bd_run",
+        "proj_3c44fb41bd_20261021_1552",
+        "proj_3c44fb41bd_20261021_1646"
+      ],
+      "best_weights": "C:\\Users\\Administrator\\Desktop\\livestock_posture\\outputs\\runs\\proj_3c44fb41bd_20261021_1646\\weights\\best.pt"
+    },
+    {
+      "pid": "bbdf59e8d1",
+      "name": "GOAT_DET",
+      "dataset_root": "C:\\Users\\Administrator\\Desktop\\livestock_posture\\outputs\\datasets\\derived_bbdf59e8d1",
+      "data_yaml": "C:\\Users\\Administrator\\Desktop\\livestock_posture\\configs\\project_bbdf59e8d1.yaml",
+      "class_names": {
+        "0": "goat"
+      },
+      "created_at": "2026-10-21 10:37:02",
+      "note": "桌面 goat.v1i.yolov8.zip，单类，仅 train；已自动生成验证集、测试集（从训练集切分）：train 2291 张 / val 458 张 / test 305 张（标签配对 3054 个）",
+      "runs": [
+        "goat20"
+      ],
+      "best_weights": "C:\\Users\\Administrator\\Desktop\\livestock_posture\\outputs\\runs\\goat20\\weights\\best.pt"
+    }
+  ]
+}

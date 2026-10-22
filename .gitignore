@@ -1,0 +1,36 @@
+# ===== 打包产物（体积巨大，不入库）=====
+dist_*/
+dist/
+build/
+build_*/
+
+# ===== Python =====
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# ===== 训练输出与数据集（体积大，本机生成）=====
+outputs/
+runs/
+
+# ===== 模型权重（大文件，不入库；预训练权重由 ultralytics 自动下载）=====
+*.pt
+*.pth
+*.onnx
+*.engine
+
+# ===== 运行时生成的项目配置缓存 =====
+configs/project_*.yaml
+
+# ===== 日志与临时文件 =====
+*.log
+crash.log
+startup.log
+.app.lock
+
+# ===== IDE =====
+.idea/
+.vscode/

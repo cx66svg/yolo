@@ -1,0 +1,16 @@
+# 由 lps.data.converter 自动生成，请勿手工修改
+# 类别方案: pose_view8（8 类）
+path: C:/Users/Administrator/Desktop/livestock_posture/outputs/datasets/pose_view8
+train: train/images
+val: val/images
+names:
+  0: feeding_front
+  1: feeding_side
+  2: resting_front
+  3: resting_side
+  4: running_front
+  5: running_side
+  6: walking_front
+  7: walking_side
+_scheme: pose_view8
+test: test/images

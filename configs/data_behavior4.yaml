@@ -1,0 +1,4 @@
+path: C:/Users/Administrator/Desktop/sheep_behavior_yolov8(1)/sheep_behavior_yolov8/data
+train: train/images
+val: valid/images
+names: {0: 'feeding', 1: 'resting', 2: 'walking', 3: 'running'}

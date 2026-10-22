@@ -1,0 +1,22 @@
+# 数据集配置（YOLO 格式）
+#
+# 说明：
+#   本文件指向由 scripts/prepare_data.py 派生的训练视图。
+#   切换类别方案时不要手改这里，重跑 prepare_data 即可自动生成对应配置：
+#       python scripts/prepare_data.py --scheme behavior4
+#       python scripts/prepare_data.py --scheme activity3
+#       python scripts/prepare_data.py --scheme pose_view8
+#   生成的配置在 configs/data_<方案名>.yaml。
+
+path: C:/Users/Administrator/Desktop/livestock_posture/outputs/datasets/behavior4
+
+train: train/images
+val: val/images
+test: test/images
+
+# 类别：0-采食 1-卧息 2-行走 3-奔跑
+names:
+  0: feeding
+  1: resting
+  2: walking
+  3: running
