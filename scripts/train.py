@@ -74,6 +74,7 @@ from lps import config                       # noqa: E402
 from lps.data import DatasetChecker          # noqa: E402
 from lps.data.profile import load_profile    # noqa: E402
 from lps.models import build                 # noqa: E402
+from lps.models.registry import find as find_model  # noqa: E402
 from lps.services.plots import install_plot_patch  # noqa: E402
 from lps.utils import ensure_ultralytics_font  # noqa: E402
 from lps.utils.text import PROGRESS_PREFIX, strip_ansi  # noqa: E402
@@ -202,6 +203,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--resume", action="store_true")
     p.add_argument("--skip-check", action="store_true", help="跳过数据自检（不推荐）")
     p.add_argument("--pretrained", default=None, help="预训练权重，默认自动查找 yolov8n.pt")
+    p.add_argument("--model", default="v8n-cbam",
+                   help="模型标识，见 lps/models/registry.py 的 MODELS（如 yolov8n / yolo11s / v8n-cbam）")
     return p.parse_args()
 
 
@@ -261,9 +264,25 @@ def main() -> None:
         if not report.passed:
             raise SystemExit("数据自检未通过，已终止训练。修正后或加 --skip-check 跳过。")
 
-    pretrained = Path(args.pretrained) if args.pretrained else config.find_pretrained("yolov8n.pt")
-    model, build_report = build(nc=num_classes, pretrained=pretrained)
-    print(build_report.summary())
+    # 模型分派：本项目自定义结构（CBAM） vs ultralytics 官方模型。
+    # 官方模型的检测头类别数由 ultralytics 训练时按 data.yaml 自动重建，无需手动处理。
+    spec = find_model(args.model)
+    from ultralytics import YOLO
+    if spec.kind == "custom":
+        pretrained = Path(args.pretrained) if args.pretrained else config.find_pretrained("yolov8n.pt")
+        model, build_report = build(nc=num_classes, pretrained=pretrained)
+        print(build_report.summary())
+    elif spec.kind == "official":
+        local = config.find_pretrained(spec.asset)
+        if local:
+            model = YOLO(str(local))
+            print(f"模型：{spec.label}（本地预训练 {local.name}）")
+        else:
+            model = YOLO(spec.asset)
+            print(f"模型：{spec.label}（官方预训练 {spec.asset}，首次使用联网下载）")
+    else:  # official-no-pretrain
+        model = YOLO(spec.asset)
+        print(f"模型：{spec.label}（无预训练权重，随机初始化从零训练）")
 
     run_name = sanitize_run_name(args.name or f"{scheme_key}_cbam")
     tc = config.TrainConfig()

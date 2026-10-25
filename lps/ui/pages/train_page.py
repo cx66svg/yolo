@@ -14,6 +14,7 @@ from PyQt6.QtWidgets import (
 )
 
 from ... import config
+from ...models.registry import MODELS
 from ...utils.text import (
     clean_log_text, is_noise_line, parse_epoch_progress, parse_progress_line,
     strip_ansi,
@@ -94,7 +95,7 @@ class TrainPage(QWidget):
 
         root.addWidget(PageHeader(
             "模型训练",
-            "基于改进的 YOLOv8 结构（含 CBAM 注意力）训练，训练日志与指标实时回填，无需等待结束。",
+            "支持多模型选择（YOLOv3/v5/v6/v8/v9/v10/v11/v12 及本项目 CBAM 改进版），训练日志与指标实时回填，无需等待结束。",
         ))
 
         self.stats = StatRow([STAT_EPOCH, STAT_MAP50, STAT_MAP5095, STAT_PRECISION, STAT_RECALL])
@@ -127,6 +128,28 @@ class TrainPage(QWidget):
     def _param_card(self) -> Card:
         card = Card("训练参数")
         form = FormGrid()
+
+        # 模型选择：从注册表读取，按分组用分隔线隔开；无预训练权重的项额外标注
+        self.model = QComboBox()
+        self.model.setMinimumWidth(240)
+        seen_groups: list[str] = []
+        for spec in MODELS:
+            if spec.group not in seen_groups:
+                if self.model.count() > 0:
+                    self.model.insertSeparator(self.model.count())
+                seen_groups.append(spec.group)
+            label = spec.label if spec.pretrained else f"{spec.label}（无预训练）"
+            self.model.addItem(label, spec.key)
+            idx = self.model.count() - 1
+            self.model.setItemData(idx, f"加载方式：{spec.asset}",
+                                   Qt.ItemDataRole.ToolTipRole)
+        # 默认选中「YOLOv8n · CBAM 改进版」（本项目当前模型）
+        default_idx = self.model.findData("v8n-cbam")
+        if default_idx >= 0:
+            self.model.setCurrentIndex(default_idx)
+        form.add_row("模型", self.model,
+                     "CBAM 改进版为本项目模型；官方模型首次使用会联网下载预训练权重，"
+                     "标「无预训练」的版本从零训练")
 
         self.epochs = QSpinBox()
         self.epochs.setRange(1, 1000)
@@ -565,6 +588,7 @@ class TrainPage(QWidget):
             "--imgsz", str(self._imgsz_value()),
             "--device", self.device.currentData(),
             "--workers", str(self.workers.currentData()),
+            "--model", str(self.model.currentData()),
             "--name", name,
             "--skip-check",
         ]
@@ -579,6 +603,7 @@ class TrainPage(QWidget):
         if project:
             self._append_log(f"项目：{project.name}（{project.num_classes} 类）")
         self._append_log(f"启动训练：{name}")
+        self._append_log(f"模型：{self.model.currentText()}")
         self._append_log(f"参数：epochs={self.epochs.value()} batch={self.batch.value()} "
                          f"imgsz={self._imgsz_value()} device={self.device.currentData()} "
                          f"workers={self.workers.currentData()}")
