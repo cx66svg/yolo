@@ -401,6 +401,25 @@ def main() -> None:
         log_file.close()
 
     save_dir = Path(getattr(getattr(model, "trainer", None), "save_dir", config.RUNS_DIR / run_name))
+
+    # 记录本次训练的模型信息，供训练页「训练详情」弹窗显示（模型名、类别数、超参）
+    try:
+        import json
+
+        _info = {
+            "model_key": spec.key,
+            "model_label": spec.label,
+            "classes": num_classes,
+            "epochs": args.epochs,
+            "batch": args.batch,
+            "imgsz": args.imgsz,
+            "data": str(data_yaml),
+        }
+        (save_dir / "model_info.json").write_text(
+            json.dumps(_info, ensure_ascii=False, indent=2), encoding="utf-8")
+    except OSError:
+        pass
+
     print("\n========== 训练完成 ==========")
     print(f"结果目录: {save_dir}")
     print(f"训练日志: {log_path}")

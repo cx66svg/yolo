@@ -21,6 +21,7 @@ from ...utils.text import (
 )
 from ..charts import MetricChart
 from ..state import AppState
+from ..train_detail import TrainDetailDialog
 from ..widgets import Card, FormGrid, PageHeader, StatRow
 from ..workers import MetricsWatcher, ScriptProcess
 
@@ -359,6 +360,7 @@ class TrainPage(QWidget):
         self.run_list.setMaximumWidth(226)
         self.run_list.setMinimumWidth(196)
         self.run_list.currentItemChanged.connect(self._on_run_changed)
+        self.run_list.itemDoubleClicked.connect(self._on_run_double_clicked)
         body.addWidget(self.run_list)
 
         self.log = QPlainTextEdit()
@@ -417,6 +419,17 @@ class TrainPage(QWidget):
             self.log.setPlainText(f"载入这次训练的结果失败：{type(exc).__name__}: {exc}")
             self.hint.setStyleSheet("color:#C0392B; font-weight:600;")
             self.hint.setText("载入历史记录失败，请查看上方日志")
+
+    def _on_run_double_clicked(self, item) -> None:
+        """双击训练记录：弹出详情对话框（模型信息 + 关键图表）。"""
+        if item is None or self.proc.running:
+            return
+        try:
+            run_dir = Path(item.data(Qt.ItemDataRole.UserRole))
+            TrainDetailDialog(run_dir, self).exec()
+        except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:
+            self.hint.setStyleSheet("color:#C0392B; font-weight:600;")
+            self.hint.setText(f"打开训练详情失败：{type(exc).__name__}: {exc}")
 
     def _load_run(self, current) -> None:
         """真正载入某次训练产物（日志、曲线、记录）。"""
