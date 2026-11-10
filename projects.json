@@ -5,7 +5,7 @@
       "pid": "3c44fb41bd",
       "name": "GOAT",
       "dataset_root": "C:\\Users\\Administrator\\Desktop\\sheep_behavior_yolov8(1)\\sheep_behavior_yolov8\\data",
-      "data_yaml": "C:\\Users\\Administrator\\Desktop\\livestock_posture\\configs\\project_3c44fb41bd.yaml",
+      "data_yaml": "C:\\Users\\Administrator\\Desktop\\目标检测项目\\livestock_posture\\configs\\project_3c44fb41bd.yaml",
       "class_names": {
         "0": "采食",
         "1": "休息",
@@ -20,13 +20,13 @@
         "proj_3c44fb41bd_20261021_1552",
         "proj_3c44fb41bd_20261021_1646"
       ],
-      "best_weights": "C:\\Users\\Administrator\\Desktop\\livestock_posture\\outputs\\runs\\proj_3c44fb41bd_20261021_1646\\weights\\best.pt"
+      "best_weights": "C:\\Users\\Administrator\\Desktop\\目标检测项目\\livestock_posture\\outputs\\runs\\proj_3c44fb41bd_20261021_1646\\weights\\best.pt"
     },
     {
       "pid": "bbdf59e8d1",
       "name": "GOAT_DET",
-      "dataset_root": "C:\\Users\\Administrator\\Desktop\\livestock_posture\\outputs\\datasets\\derived_bbdf59e8d1",
-      "data_yaml": "C:\\Users\\Administrator\\Desktop\\livestock_posture\\configs\\project_bbdf59e8d1.yaml",
+      "dataset_root": "C:\\Users\\Administrator\\Desktop\\目标检测项目\\livestock_posture\\outputs\\datasets\\derived_bbdf59e8d1",
+      "data_yaml": "C:\\Users\\Administrator\\Desktop\\目标检测项目\\livestock_posture\\configs\\project_bbdf59e8d1.yaml",
       "class_names": {
         "0": "goat"
       },
@@ -35,7 +35,7 @@
       "runs": [
         "goat20"
       ],
-      "best_weights": "C:\\Users\\Administrator\\Desktop\\livestock_posture\\outputs\\runs\\goat20\\weights\\best.pt"
+      "best_weights": "C:\\Users\\Administrator\\Desktop\\目标检测项目\\livestock_posture\\outputs\\runs\\goat20\\weights\\best.pt"
     }
   ]
 }

@@ -8,7 +8,7 @@
 #       python scripts/prepare_data.py --scheme pose_view8
 #   生成的配置在 configs/data_<方案名>.yaml。
 
-path: C:/Users/Administrator/Desktop/livestock_posture/outputs/datasets/behavior4
+path: C:/Users/Administrator/Desktop/目标检测项目/livestock_posture/outputs/datasets/behavior4
 
 train: train/images
 val: val/images

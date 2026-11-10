@@ -16,7 +16,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 
-SRC = Path(r"C:\Users\Administrator\Desktop\山羊检测\sheep_behavior_yolov8(1)\sheep_behavior_yolov8\data")
+SRC = Path(r"C:\Users\Administrator\Desktop\sheep_behavior_yolov8(1)\sheep_behavior_yolov8\data")
 OUT = Path(__file__).resolve().parent.parent / "outputs" / "color_probe"
 CLASS_EN = {0: "FEED", 1: "REST", 2: "RUN", 3: "WALK"}
 

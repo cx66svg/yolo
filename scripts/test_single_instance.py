@@ -4,7 +4,7 @@ import sys
 import time
 from pathlib import Path
 
-ROOT = Path(r"C:\Users\Administrator\Desktop\livestock_posture")
+ROOT = Path(__file__).resolve().parent.parent
 PY_EXE = sys.executable
 LOCK = ROOT / ".app.lock"
 
